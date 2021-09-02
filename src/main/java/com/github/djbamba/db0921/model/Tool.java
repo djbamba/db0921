@@ -1,10 +1,12 @@
 package com.github.djbamba.db0921.model;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
-@Builder
+@AllArgsConstructor
+@ToString
 public class Tool {
 private final ToolType toolType;
 private final Brand brand;
