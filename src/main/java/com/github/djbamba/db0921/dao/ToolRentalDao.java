@@ -20,7 +20,7 @@ public class ToolRentalDao implements RentalDao<Tool> {
 
   @Override
   public Optional<Tool> findByID(String id) {
-    return this.tools.stream().filter(tool -> tool.getToolCode().equalsIgnoreCase(id)).findFirst();
+    return this.tools.stream().filter(tool -> tool.getCode().equalsIgnoreCase(id)).findFirst();
   }
 
   @Override

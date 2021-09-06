@@ -1,6 +1,6 @@
 package com.github.djbamba.db0921.checkout;
 
-import com.github.djbamba.db0921.model.ToolType;
+import com.github.djbamba.db0921.model.Rentable;
 import com.github.djbamba.db0921.util.DateUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -34,19 +34,18 @@ public class Calculator {
    * Counts the number of days customers are charged. Excludes non-applicable days. Starts day after
    * checkout.
    *
-   * @param toolType type of tool rental
+   * @param rentable type of rental
    * @param checkoutDate date customer checks out rental
    * @param dueDate date customer return rental
    * @return days customer will be charged
    */
-  public int calculateChargeableDays(
-      ToolType toolType, LocalDateTime checkoutDate, LocalDateTime dueDate) {
+  public int calculateChargeableDays(Rentable rentable, LocalDateTime checkoutDate, LocalDateTime dueDate) {
     int chargeableDays = 0;
     LocalDateTime chargeDate = checkoutDate.plusDays(1);
 
     while (!chargeDate.isAfter(dueDate)) {
 
-      if (shouldCharge(toolType, chargeDate)) {
+      if (shouldCharge(rentable, chargeDate)) {
         chargeableDays += 1;
       }
       chargeDate = chargeDate.plusDays(1);
@@ -69,29 +68,29 @@ public class Calculator {
   }
 
   /**
-   * Determines if a day is chargeable based on ToolType, Holidays, Day-of-week.
+   * Determines if a day is chargeable based on rental type.
    *
-   * @param toolType type of tool
+   * @param rentable type of tool
    * @param checkDate date to check
    * @return true if checkDate is a chargeable day
    */
-  private boolean shouldCharge(ToolType toolType, LocalDateTime checkDate) {
+  private boolean shouldCharge(Rentable rentable, LocalDateTime checkDate) {
     if (DateUtil.isWeekday(checkDate)) {
       // if holiday falls on weekday and applicable
       if (DateUtil.isHoliday(checkDate)) {
-        return toolType.isHolidayCharge();
+        return rentable.isHolidayCharge();
       }
       // if holiday fell on weekend and applicable.
       switch (checkDate.getDayOfWeek()) {
         case MONDAY: // check SUN
-          if (DateUtil.isHoliday(checkDate.minusDays(1))) return toolType.isHolidayCharge();
+          if (DateUtil.isHoliday(checkDate.minusDays(1))) return rentable.isHolidayCharge();
         case FRIDAY: // check SAT
-          if (DateUtil.isHoliday(checkDate.plusDays(1))) return toolType.isHolidayCharge();
+          if (DateUtil.isHoliday(checkDate.plusDays(1))) return rentable.isHolidayCharge();
         default: // cascades if not short-circ'd by MON/FRI cases
-          return toolType.isWeekdayCharge();
+          return rentable.isWeekdayCharge();
       }
     }
     // holidays observed on weekdays only. only checking for applicable non-holiday weekends.
-    return !DateUtil.isHoliday(checkDate) && toolType.isWeekendCharge();
+    return !DateUtil.isHoliday(checkDate) && rentable.isWeekendCharge();
   }
 }
