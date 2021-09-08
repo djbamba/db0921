@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public enum ToolType {
+  // FIXME: re-visit. should implement interface like brand?
   LADDER(new BigDecimal("1.99"), true, true, false),
   CHAINSAW(new BigDecimal("1.49"), true, false, true),
   JACKHAMMER(new BigDecimal("2.99"), true, false, false);

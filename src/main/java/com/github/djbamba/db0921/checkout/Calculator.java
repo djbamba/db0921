@@ -8,9 +8,7 @@ import java.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Handles the calculations and business logic for tool rentals.
- */
+/** Handles the calculations and business logic for tool rentals. */
 public class Calculator {
   private static final Logger log = LoggerFactory.getLogger(Calculator.class);
 
@@ -39,7 +37,8 @@ public class Calculator {
    * @param dueDate date customer return rental
    * @return days customer will be charged
    */
-  public int calculateChargeableDays(Rentable rentable, LocalDateTime checkoutDate, LocalDateTime dueDate) {
+  public int calculateChargeableDays(
+      Rentable rentable, LocalDateTime checkoutDate, LocalDateTime dueDate) {
     int chargeableDays = 0;
     LocalDateTime chargeDate = checkoutDate.plusDays(1);
 
@@ -75,6 +74,7 @@ public class Calculator {
    * @return true if checkDate is a chargeable day
    */
   private boolean shouldCharge(Rentable rentable, LocalDateTime checkDate) {
+    // FIXME: Break-out conditions and date methods into separate class
     if (DateUtil.isWeekday(checkDate)) {
       // if holiday falls on weekday and applicable
       if (DateUtil.isHoliday(checkDate)) {
