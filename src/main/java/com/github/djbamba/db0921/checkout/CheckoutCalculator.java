@@ -55,15 +55,20 @@ public class Calculator {
 
   /** Pre-discount charge = dailyRate * chargeDays */
   public BigDecimal calculatePreDiscountRate(BigDecimal dailyRate, int chargeDays) {
-    return dailyRate.multiply(BigDecimal.valueOf(chargeDays)).setScale(2, RoundingMode.HALF_UP);
+    //create new object
+    BigDecimal preDiscountRate = dailyRate.multiply(BigDecimal.valueOf(chargeDays));
+
+    return setScale(preDiscountRate);
   }
 
   /** Discount amount = preDiscountRate * discountRate. */
   public BigDecimal calculateDiscountAmount(BigDecimal preDiscountRate, BigDecimal discountRate) {
     // new BigDecimal("0") is not equal to BigDecimal.ZERO so use compareTo
-    if (BigDecimal.ZERO.compareTo(discountRate) == 0) return BigDecimal.ZERO;
+    if (BigDecimal.ZERO.compareTo(discountRate) == 0)
+      return BigDecimal.ZERO;
 
-    return preDiscountRate.multiply(discountRate).setScale(2, RoundingMode.HALF_UP);
+    BigDecimal discountAmount = preDiscountRate.multiply(discountRate);
+    return setScale(discountAmount);
   }
 
   /**
@@ -87,10 +92,14 @@ public class Calculator {
         case FRIDAY: // check SAT
           if (DateUtil.isHoliday(checkDate.plusDays(1))) return rentable.isHolidayCharge();
         default: // cascades if not short-circ'd by MON/FRI cases
-          return rentable.isWeekdayCharge();
+          return rentable.weekdayCharge();
       }
     }
     // holidays observed on weekdays only. only checking for applicable non-holiday weekends.
     return !DateUtil.isHoliday(checkDate) && rentable.isWeekendCharge();
+  }
+
+  private BigDecimal setScale(BigDecimal value){
+    return value.setScale(2, RoundingMode.HALF_UP);
   }
 }
