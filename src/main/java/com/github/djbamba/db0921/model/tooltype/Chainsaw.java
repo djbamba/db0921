@@ -1,7 +1,9 @@
 package com.github.djbamba.db0921.model.tooltype;
 
 import com.github.djbamba.db0921.model.ToolType;
+import com.github.djbamba.db0921.util.DateUtil;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class Chainsaw implements ToolType {
   private final BigDecimal rate = new BigDecimal("1.49");
@@ -17,12 +19,7 @@ public class Chainsaw implements ToolType {
   }
 
   @Override
-  public boolean weekdayCharge() {
-    return true;
-  }
-
-  @Override
-  public boolean holidayCharge() {
-    return true;
+  public boolean countChargeDay(LocalDateTime date) {
+    return !DateUtil.isWeekend(date);
   }
 }
