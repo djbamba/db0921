@@ -1,27 +1,28 @@
 package com.github.djbamba.db0921.model;
 
+import com.github.djbamba.db0921.model.tooltype.Chainsaw;
+import com.github.djbamba.db0921.model.tooltype.Jackhammer;
+import com.github.djbamba.db0921.model.tooltype.Ladder;
 import java.math.BigDecimal;
-import lombok.Getter;
 
-@Getter
-public enum ToolType {
-  // FIXME: re-visit. should implement interface like brand?
-  LADDER(new BigDecimal("1.99"), true, true, false),
-  CHAINSAW(new BigDecimal("1.49"), true, false, true),
-  JACKHAMMER(new BigDecimal("2.99"), true, false, false);
+public interface ToolType {
+  String type();
 
-  private final BigDecimal dailyCharge;
-  private final boolean weekdayCharge;
-  private final boolean weekendCharge;
-  private final boolean holidayCharge;
+  BigDecimal dailyCharge();
 
-  ToolType(
-      BigDecimal dailyCharge, boolean weekdayCharge, boolean weekendCharge, boolean holidayCharge) {
-    this.dailyCharge = dailyCharge;
-    this.weekdayCharge = weekdayCharge;
-    this.weekendCharge = weekendCharge;
-    this.holidayCharge = holidayCharge;
+  default boolean weekdayCharge() {
+    return false;
   }
 
+  default boolean weekendCharge() {
+    return false;
+  }
 
+  default boolean holidayCharge() {
+    return false;
+  }
+
+  ToolType LADDER = new Ladder();
+  ToolType CHAINSAW = new Chainsaw();
+  ToolType JACKHAMMER = new Jackhammer();
 }
