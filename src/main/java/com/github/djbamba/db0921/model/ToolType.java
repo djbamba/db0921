@@ -1,26 +1,19 @@
 package com.github.djbamba.db0921.model;
 
+import com.github.djbamba.db0921.model.tooltype.Chainsaw;
+import com.github.djbamba.db0921.model.tooltype.Jackhammer;
+import com.github.djbamba.db0921.model.tooltype.Ladder;
 import java.math.BigDecimal;
-import lombok.Getter;
+import java.time.LocalDateTime;
 
-@Getter
-public enum ToolType {
-  LADDER(new BigDecimal("1.99"), true, true, false),
-  CHAINSAW(new BigDecimal("1.49"), true, false, true),
-  JACKHAMMER(new BigDecimal("2.99"), true, false, false);
+public interface ToolType {
+  ToolType LADDER = new Ladder();
+  ToolType CHAINSAW = new Chainsaw();
+  ToolType JACKHAMMER = new Jackhammer();
 
-  private final BigDecimal dailyCharge;
-  private final boolean weekdayCharge;
-  private final boolean weekendCharge;
-  private final boolean holidayCharge;
+  String type();
 
-  ToolType(
-      BigDecimal dailyCharge, boolean weekdayCharge, boolean weekendCharge, boolean holidayCharge) {
-    this.dailyCharge = dailyCharge;
-    this.weekdayCharge = weekdayCharge;
-    this.weekendCharge = weekendCharge;
-    this.holidayCharge = holidayCharge;
-  }
+  BigDecimal dailyCharge();
 
-
+  boolean countChargeDay(LocalDateTime date);
 }

@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 public class RentalAgreement {
   private static final Logger log = LoggerFactory.getLogger(RentalAgreement.class);
+  // FIXME: Break-out to util/format class
   private final NumberFormat currencyFormat = new DecimalFormat("$#,##0.00");
   private final NumberFormat percentFormat = new DecimalFormat("0%");
   // tool info
